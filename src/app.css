@@ -1,0 +1,520 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+
+/*
+ * MeetFlow design system.
+ *
+ * Calm neutral base + ONE strong accent (indigo). Dark mode is a class on <html>, applied
+ * before first paint by the script in app.html. Every colour is a token so a component
+ * never hard-codes a hex value, and light/dark stay in sync by construction.
+ */
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+	--font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+	/* Accent: indigo. One hue, used for every primary action. */
+	--color-accent-50: #eef2ff;
+	--color-accent-100: #e0e7ff;
+	--color-accent-200: #c7d2fe;
+	--color-accent-300: #a5b4fc;
+	--color-accent-400: #818cf8;
+	--color-accent-500: #6366f1;
+	--color-accent-600: #4f46e5;
+	--color-accent-700: #4338ca;
+	--color-accent-800: #3730a3;
+	--color-accent-900: #312e81;
+
+	/* Neutral base: slate, slightly cooled. */
+	--color-ink-50: #f8fafc;
+	--color-ink-100: #f1f5f9;
+	--color-ink-200: #e2e8f0;
+	--color-ink-300: #cbd5e1;
+	--color-ink-400: #94a3b8;
+	--color-ink-500: #64748b;
+	--color-ink-600: #475569;
+	--color-ink-700: #334155;
+	--color-ink-800: #1e293b;
+	--color-ink-900: #0f172a;
+	--color-ink-950: #020617;
+
+	--radius-card: 1rem;
+	--radius-field: 0.625rem;
+}
+
+:root {
+	/* Semantic surfaces, remapped wholesale in dark mode. */
+	--surface: #ffffff;
+	--surface-raised: #ffffff;
+	--surface-sunken: #f8fafc;
+	--surface-hover: #f1f5f9;
+	--border: #e2e8f0;
+	--border-strong: #cbd5e1;
+	--text: #0f172a;
+	--text-muted: #475569;
+	--text-subtle: #64748b;
+	--accent: #4f46e5;
+	--accent-contrast: #ffffff;
+	--accent-soft: #eef2ff;
+	--accent-soft-text: #3730a3;
+
+	--ok: #047857;
+	--ok-soft: #ecfdf5;
+	--warn: #b45309;
+	--warn-soft: #fffbeb;
+	--danger: #b91c1c;
+	--danger-soft: #fef2f2;
+
+	/* Calendar event colours: 6 distinguishable hues that work on both themes. */
+	--event-0: #4f46e5;
+	--event-1: #0891b2;
+	--event-2: #7c3aed;
+	--event-3: #059669;
+	--event-4: #d97706;
+	--event-5: #db2777;
+
+
+	/* Text-safe variants of the event hues: used for small labels drawn on a tinted chip,
+	   where the raw hue only reaches ~2.7-3.1:1. Mixed toward black for AA compliance. */
+	--mf-event-ink-0: color-mix(in srgb, var(--event-0) 68%, #000);
+	--mf-event-ink-1: color-mix(in srgb, var(--event-1) 60%, #000);
+	--mf-event-ink-2: color-mix(in srgb, var(--event-2) 72%, #000);
+	--mf-event-ink-3: color-mix(in srgb, var(--event-3) 60%, #000);
+	--mf-event-ink-4: color-mix(in srgb, var(--event-4) 55%, #000);
+	--mf-event-ink-5: color-mix(in srgb, var(--event-5) 70%, #000);
+	--shadow-card: 0 1px 2px rgb(15 23 42 / 0.04), 0 2px 8px rgb(15 23 42 / 0.04);
+	--shadow-raised: 0 4px 16px rgb(15 23 42 / 0.08), 0 1px 3px rgb(15 23 42 / 0.06);
+	--shadow-overlay: 0 16px 48px rgb(15 23 42 / 0.18);
+}
+
+.dark {
+	--surface: #0f172a;
+	--surface-raised: #1e293b;
+	--surface-sunken: #020617;
+	--surface-hover: #334155;
+	--border: #1e293b;
+	--border-strong: #334155;
+	--text: #f1f5f9;
+	--text-muted: #cbd5e1;
+	--text-subtle: #94a3b8;
+	--accent: #818cf8;
+	--accent-contrast: #0f172a;
+	--accent-soft: #1e1b4b;
+	--accent-soft-text: #c7d2fe;
+
+	--ok: #34d399;
+	--ok-soft: #022c22;
+	--warn: #fbbf24;
+	--warn-soft: #2c1a02;
+	--danger: #f87171;
+	--danger-soft: #2c0b0b;
+
+	--event-0: #818cf8;
+	--event-1: #22d3ee;
+	--event-2: #a78bfa;
+	--event-3: #34d399;
+	--event-4: #fbbf24;
+	--event-5: #f472b6;
+
+
+	/* In dark mode the chip tint is dark, so the ink moves toward white instead. */
+	--mf-event-ink-0: color-mix(in srgb, var(--event-0) 78%, #fff);
+	--mf-event-ink-1: color-mix(in srgb, var(--event-1) 85%, #fff);
+	--mf-event-ink-2: color-mix(in srgb, var(--event-2) 80%, #fff);
+	--mf-event-ink-3: color-mix(in srgb, var(--event-3) 85%, #fff);
+	--mf-event-ink-4: color-mix(in srgb, var(--event-4) 88%, #fff);
+	--mf-event-ink-5: color-mix(in srgb, var(--event-5) 82%, #fff);
+	--shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 2px 8px rgb(0 0 0 / 0.2);
+	--shadow-raised: 0 4px 16px rgb(0 0 0 / 0.4), 0 1px 3px rgb(0 0 0 / 0.3);
+	--shadow-overlay: 0 16px 48px rgb(0 0 0 / 0.6);
+}
+
+@layer base {
+	html {
+		font-family: var(--font-sans);
+		-webkit-text-size-adjust: 100%;
+		scroll-behavior: smooth;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		html {
+			scroll-behavior: auto;
+		}
+		*,
+		*::before,
+		*::after {
+			animation-duration: 0.01ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.01ms !important;
+		}
+	}
+
+	body {
+		background: var(--surface-sunken);
+		color: var(--text);
+		min-height: 100%;
+		-webkit-font-smoothing: antialiased;
+	}
+
+	/*
+	 * One visible focus style for the whole app. `:focus-visible` so a mouse click does not
+	 * leave a ring, but every keyboard path does - this is the backbone of keyboard nav.
+	 */
+	:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
+		border-radius: 4px;
+	}
+
+	::selection {
+		background: var(--accent);
+		color: var(--accent-contrast);
+	}
+
+	h1,
+	h2,
+	h3,
+	h4 {
+		color: var(--text);
+		font-weight: 650;
+		letter-spacing: -0.015em;
+	}
+
+	/* Inputs inherit the type scale rather than the browser default. */
+	input,
+	select,
+	textarea,
+	button {
+		font: inherit;
+		color: inherit;
+	}
+}
+
+@layer components {
+	/* ---- surfaces ---- */
+	.mf-card {
+		background: var(--surface-raised);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-card);
+		box-shadow: var(--shadow-card);
+	}
+
+	.mf-card-hover {
+		transition:
+			box-shadow 180ms ease,
+			transform 180ms ease,
+			border-color 180ms ease;
+	}
+	.mf-card-hover:hover {
+		box-shadow: var(--shadow-raised);
+		border-color: var(--border-strong);
+	}
+
+	/* ---- buttons ---- */
+	.mf-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		border-radius: var(--radius-field);
+		font-weight: 560;
+		line-height: 1;
+		padding: 0.625rem 1rem;
+		min-height: 2.75rem; /* 44px touch target */
+		cursor: pointer;
+		border: 1px solid transparent;
+		transition:
+			background-color 150ms ease,
+			border-color 150ms ease,
+			color 150ms ease,
+			transform 80ms ease;
+		white-space: nowrap;
+	}
+	.mf-btn:active:not(:disabled) {
+		transform: translateY(1px);
+	}
+	.mf-btn:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	.mf-btn-primary {
+		background: var(--accent);
+		color: var(--accent-contrast);
+	}
+	.mf-btn-primary:hover:not(:disabled) {
+		background: var(--color-accent-700);
+	}
+	.dark .mf-btn-primary:hover:not(:disabled) {
+		background: var(--color-accent-300);
+	}
+
+	.mf-btn-secondary {
+		background: var(--surface-raised);
+		border-color: var(--border-strong);
+		color: var(--text);
+	}
+	.mf-btn-secondary:hover:not(:disabled) {
+		background: var(--surface-hover);
+	}
+
+	.mf-btn-ghost {
+		background: transparent;
+		color: var(--text-muted);
+	}
+	.mf-btn-ghost:hover:not(:disabled) {
+		background: var(--surface-hover);
+		color: var(--text);
+	}
+
+	.mf-btn-danger {
+		background: var(--danger);
+		color: #fff;
+	}
+	.dark .mf-btn-danger {
+		color: var(--color-ink-950);
+	}
+
+	.mf-btn-sm {
+		padding: 0.375rem 0.75rem;
+		min-height: 2.25rem;
+		font-size: 0.875rem;
+	}
+
+	/* ---- form fields ---- */
+	.mf-field {
+		width: 100%;
+		background: var(--surface);
+		border: 1px solid var(--border-strong);
+		border-radius: var(--radius-field);
+		padding: 0.625rem 0.75rem;
+		min-height: 2.75rem;
+		transition:
+			border-color 150ms ease,
+			box-shadow 150ms ease;
+	}
+	.mf-field:hover:not(:disabled) {
+		border-color: var(--text-subtle);
+	}
+	.mf-field:focus {
+		outline: none;
+		border-color: var(--accent);
+		box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+	}
+	.mf-field[aria-invalid='true'] {
+		border-color: var(--danger);
+	}
+	.mf-field::placeholder {
+		color: var(--text-subtle);
+	}
+
+	.mf-label {
+		display: block;
+		font-size: 0.8125rem;
+		font-weight: 560;
+		color: var(--text-muted);
+		margin-bottom: 0.375rem;
+	}
+
+	/* ---- chips / badges ---- */
+	.mf-chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.375rem;
+		border-radius: 999px;
+		padding: 0.25rem 0.625rem;
+		font-size: 0.8125rem;
+		font-weight: 500;
+		background: var(--surface-hover);
+		color: var(--text-muted);
+		border: 1px solid var(--border);
+	}
+
+	.mf-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		border-radius: 999px;
+		padding: 0.1875rem 0.5rem;
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.01em;
+	}
+	.mf-badge-accent {
+		background: var(--accent-soft);
+		color: var(--accent-soft-text);
+	}
+	.mf-badge-ok {
+		background: var(--ok-soft);
+		color: var(--ok);
+	}
+	.mf-badge-warn {
+		background: var(--warn-soft);
+		color: var(--warn);
+	}
+	.mf-badge-danger {
+		background: var(--danger-soft);
+		color: var(--danger);
+	}
+	.mf-badge-neutral {
+		background: var(--surface-hover);
+		color: var(--text-muted);
+	}
+
+	/* ---- skeleton loaders ---- */
+	.mf-skeleton {
+		background: linear-gradient(
+			90deg,
+			var(--surface-hover) 25%,
+			var(--border) 50%,
+			var(--surface-hover) 75%
+		);
+		background-size: 200% 100%;
+		animation: mf-shimmer 1.4s ease-in-out infinite;
+		border-radius: 0.5rem;
+	}
+
+	@keyframes mf-shimmer {
+		0% {
+			background-position: 200% 0;
+		}
+		100% {
+			background-position: -200% 0;
+		}
+	}
+
+	/* ---- links ---- */
+	.mf-link {
+		color: var(--accent);
+		text-decoration: underline;
+		text-underline-offset: 2px;
+		text-decoration-thickness: 1px;
+	}
+	.mf-link:hover {
+		text-decoration-thickness: 2px;
+	}
+
+	/* Skip link: visible only on keyboard focus. */
+	.mf-skip {
+		position: absolute;
+		left: -9999px;
+		top: 0.5rem;
+		z-index: 100;
+	}
+	.mf-skip:focus {
+		left: 0.5rem;
+		padding: 0.625rem 1rem;
+		background: var(--accent);
+		color: var(--accent-contrast);
+		border-radius: var(--radius-field);
+	}
+
+	/* Screen-reader-only text that still gets focus when it needs to. */
+	.mf-sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	/* ---- notes (rich text) rendering ---- */
+	.mf-prose {
+		color: var(--text);
+		line-height: 1.65;
+	}
+	.mf-prose h2 {
+		font-size: 1.125rem;
+		margin: 1.25rem 0 0.5rem;
+	}
+	.mf-prose h3 {
+		font-size: 1rem;
+		margin: 1.1rem 0 0.4rem;
+		color: var(--text);
+	}
+	.mf-prose p {
+		margin: 0.5rem 0;
+	}
+	.mf-prose ul,
+	.mf-prose ol {
+		margin: 0.5rem 0 0.5rem 1.25rem;
+	}
+	.mf-prose ul {
+		list-style: disc;
+	}
+	.mf-prose ol {
+		list-style: decimal;
+	}
+	.mf-prose li {
+		margin: 0.25rem 0;
+	}
+	.mf-prose blockquote {
+		border-left: 3px solid var(--border-strong);
+		padding-left: 0.875rem;
+		color: var(--text-muted);
+		margin: 0.75rem 0;
+	}
+	.mf-prose code {
+		background: var(--surface-hover);
+		border-radius: 4px;
+		padding: 0.1rem 0.3rem;
+		font-size: 0.9em;
+		font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+	}
+	.mf-prose a {
+		color: var(--accent);
+		text-decoration: underline;
+	}
+
+	/* ---- scrollbars ---- */
+	.mf-scroll {
+		scrollbar-width: thin;
+		scrollbar-color: var(--border-strong) transparent;
+	}
+	.mf-scroll::-webkit-scrollbar {
+		width: 10px;
+		height: 10px;
+	}
+	.mf-scroll::-webkit-scrollbar-thumb {
+		background: var(--border-strong);
+		border-radius: 999px;
+		border: 3px solid transparent;
+		background-clip: content-box;
+	}
+	.mf-scroll::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	/* Drag-and-drop affordances, shared by the calendar, agenda and board. */
+	.mf-drop-target {
+		outline: 2px dashed var(--accent);
+		outline-offset: -4px;
+		background: var(--accent-soft);
+	}
+	.mf-dragging {
+		opacity: 0.45;
+	}
+}
+
+/* Utility: truncate long titles to N lines. Long meeting titles are an explicit case. */
+.mf-clamp-1,
+.mf-clamp-2,
+.mf-clamp-3 {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+.mf-clamp-1 {
+	-webkit-line-clamp: 1;
+}
+.mf-clamp-2 {
+	-webkit-line-clamp: 2;
+}
+.mf-clamp-3 {
+	-webkit-line-clamp: 3;
+}

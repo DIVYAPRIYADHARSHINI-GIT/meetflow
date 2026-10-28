@@ -1,0 +1,41 @@
+{
+	"name": "meetflow",
+	"version": "1.0.0",
+	"private": true,
+	"description": "MeetFlow - meetings that actually get things done. Browser-only meeting management and virtual meeting room.",
+	"type": "module",
+	"imports": {
+		"#lib/*": "./src/lib/*"
+	},
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"probe": "vitest run --config probes/vitest.probe.config.ts probes/e2e.probe.ts",
+		"probe:a11y": "vitest run --config probes/vitest.probe.config.ts probes/a11y.probe.ts",
+		"probe:live": "vitest run --config probes/vitest.probe.config.ts probes/live.probe.ts",
+		"lint": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --threshold warning",
+		"test:all": "npm run check && npm run test && npm run probe && npm run probe:a11y"
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-static": "4.0.0",
+		"@sveltejs/kit": "3.1.0",
+		"@sveltejs/vite-plugin-svelte": "7.3.1",
+		"@tailwindcss/vite": "4.3.3",
+		"@types/node": "26.6.5",
+		"axe-core": "4.14.0",
+		"playwright": "1.64.1",
+		"svelte": "5.57.3",
+		"svelte-check": "4.7.7",
+		"tailwindcss": "4.3.3",
+		"typescript": "6.0.3",
+		"vite": "8.3.5",
+		"vitest": "5.0.5"
+	},
+	"dependencies": {
+		"@fontsource-variable/inter": "5.2.8"
+	}
+}
