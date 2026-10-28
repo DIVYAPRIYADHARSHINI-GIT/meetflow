@@ -8,3 +8,5 @@ build/
 *.local
 .DS_Store
 probes/screenshots/
+.vercel
+.env*
