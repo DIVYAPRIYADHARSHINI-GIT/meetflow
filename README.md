@@ -2,6 +2,13 @@
 
 > Meetings that actually get things done.
 
+**Live:** https://meetflow-nu.vercel.app · **Repo:** https://github.com/DIVYAPRIYADHARSHINI-GIT/meetflow
+
+> Deployment Protection (Vercel Authentication) is enabled on this project, so the *raw*
+> per-deployment URLs (`meetflow-<hash>-divya-6411.vercel.app`) answer `302` and bounce to
+> Vercel SSO. The **production alias above is the public link** and answers `200`
+> anonymously — that is the one to share.
+
 A professional meeting management and virtual meeting workspace: schedule with a real
 agenda, run the meeting in a room that keeps time, take notes, assign action items, and
 review the auto-generated summary afterwards. Everything runs in the browser — no server,
@@ -94,6 +101,10 @@ and both paths are tested.
 | Unit (`npm run test`) | **234** | time/DST, recurrence, conflicts, agenda timing, notes, storage, media, sample integrity |
 | E2E (`npm run probe`) | **60** | the full journey in real Chrome, plus XSS, media, storage recovery, 120-meeting load, hosting contract |
 | A11y (`npm run probe:a11y`) | **37** | axe-core WCAG 2.1 AA + keyboard nav, focus trap, skip link |
+| Live (`npm run probe:live`) | **29** | the deployed production URL, anonymously: rewrites, MIME types, caching, deep-link refresh, real camera denial, 3 widths |
+
+`npm run probe:live` targets `MEETFLOW_URL` (default: the production alias), so it can be
+pointed at a preview deployment too.
 
 Explicitly tested risk areas: DST boundaries (spring-forward gap times, fall-back ambiguity,
 southern hemisphere), midnight crossing, month-end recurrence (31st → 28th/29th), leap days,
@@ -116,6 +127,11 @@ Static output, deployable unchanged to Vercel, Netlify or GitHub Pages.
   the prerendered landing page with a bare JS shell and lose the real `<h1>` from the served
   markup. `/` is prerendered with SSR so the hero copy is in the HTML; every other route
   opts out of SSR because they read `?code=` / `?id=` query params.
+- The fallback rewrite deliberately **excludes** `/_app/`, the favicon and known asset
+  extensions. A plain `/(.*)` catch-all returns `200 text/html` for a *missing* `.js` or
+  `.json`, which turns a broken asset reference into a silent HTML response that a `fetch()`
+  or `<script>` would try to parse. Missing assets now `404` honestly; `probe:live` asserts
+  this.
 
 ## Sample data
 
