@@ -101,11 +101,16 @@ export class RoomSession {
 		if (!result.ok) {
 			this.failure = result.failure;
 			this.stream = null;
-			// Reflect reality in the controls: a denied camera must not show as "on".
-			if (result.failure.kind === 'denied' || result.failure.kind === 'not-found') {
-				this.cameraOn = false;
-				this.micOn = false;
-			}
+			/*
+			 * Reflect reality in the controls. ANY failure means there is no stream, so the mic
+			 * and camera cannot honestly show as "on" - previously this only reset for 'denied'
+			 * and 'not-found', which left the buttons reading "Mic on / Camera on" after an
+			 * 'unknown' or 'in-use' failure while the preview showed "Camera is off". Caught by
+			 * the live-site denied-permission probe.
+			 */
+			this.cameraOn = false;
+			this.micOn = false;
+			this.syncSelf();
 			return;
 		}
 
