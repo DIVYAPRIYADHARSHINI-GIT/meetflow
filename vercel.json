@@ -7,7 +7,7 @@
 	"trailingSlash": true,
 	"rewrites": [
 		{
-			"source": "/(.*)",
+			"source": "/((?!_app/|favicon\\.svg$|.*\\.(?:js|mjs|css|json|csv|woff2?|ttf|otf|eot|svg|png|jpe?g|gif|webp|avif|ico|map|txt|xml|pdf|ics|webmanifest)$).*)",
 			"destination": "/200.html"
 		}
 	],
